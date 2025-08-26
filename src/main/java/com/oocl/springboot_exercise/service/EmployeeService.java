@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.oocl.springboot_exercise.dao.Company;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,5 +42,9 @@ public class EmployeeService {
         return employeeDb.values().stream()
                 .filter(employee -> employee.getGender().equalsIgnoreCase(gender))
                 .collect(Collectors.toList());
+    }
+
+    public List<Employee> getAllEmployees() {
+        return new ArrayList<>(employeeDb.values());
     }
 }

@@ -44,4 +44,9 @@ public class EmployeeController {
     public List<Employee> getEmployeesByGender(@RequestParam String gender) {
         return employeeService.getEmployeesByGender(gender);
     }
+
+    @GetMapping
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
 }
