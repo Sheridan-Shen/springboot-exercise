@@ -47,4 +47,8 @@ public class CompanyService {
         }
         return null;
     }
+
+    public boolean deleteCompany(Integer id) {
+        return companyDb.remove(id) != null;
+    }
 }

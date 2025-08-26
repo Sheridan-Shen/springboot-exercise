@@ -6,6 +6,7 @@ import com.oocl.springboot_exercise.dao.Employee;
 import com.oocl.springboot_exercise.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,16 @@ public class CompanyController {
             return ResponseEntity.ok(updatedCompany);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable Integer id) {
+        boolean deleted = companyService.deleteCompany(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found
         }
     }
 }
