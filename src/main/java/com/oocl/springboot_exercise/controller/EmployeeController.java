@@ -71,4 +71,9 @@ public class EmployeeController {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
     }
+
+    @GetMapping(params = {"page", "size"})
+    public List<Employee> getEmployeesByPage(@RequestParam Integer page, @RequestParam Integer size) {
+        return employeeService.getEmployeesByPage(page, size);
+    }
 }

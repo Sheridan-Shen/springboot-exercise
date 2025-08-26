@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.oocl.springboot_exercise.dao.Company;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class EmployeeService {
 
         Integer newId = employeeIdGenerator.incrementAndGet();
         employee.setId(newId);
+        employee.setCompanyId(companyId);
         company.getEmployees().add(employee);
         employeeDb.put(newId, employee);
 
@@ -79,5 +81,17 @@ public class EmployeeService {
             return true;
         }
         return false;
+    }
+
+    public List<Employee> getEmployeesByPage(Integer page, Integer size) {
+        List<Employee> allEmployees = new ArrayList<>(employeeDb.values());
+        int fromIndex = (page - 1) * size;
+        int toIndex = Math.min(fromIndex + size, allEmployees.size());
+
+        if (fromIndex > allEmployees.size()) {
+            return Collections.emptyList();
+        }
+
+        return allEmployees.subList(fromIndex, toIndex);
     }
 }

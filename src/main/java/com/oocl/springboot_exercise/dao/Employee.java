@@ -7,6 +7,7 @@ public class Employee {
     private int age;
     private String gender;
     private double salary;
+    private Integer companyId;
 
     // 构造函数
     public Employee() {}
@@ -58,5 +59,13 @@ public class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 }
