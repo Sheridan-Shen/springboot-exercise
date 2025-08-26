@@ -1,8 +1,12 @@
 package com.oocl.springboot_exercise.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Company {
     private Integer id;
     private String name;
+    private List<Employee> employees = new ArrayList<>();
 
     // 构造函数
     public Company() {}
@@ -27,5 +31,13 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }
