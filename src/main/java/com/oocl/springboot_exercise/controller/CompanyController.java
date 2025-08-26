@@ -5,9 +5,11 @@ import com.oocl.springboot_exercise.dao.Company;
 import com.oocl.springboot_exercise.dao.Employee;
 import com.oocl.springboot_exercise.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,5 +53,15 @@ public class CompanyController {
     @PostMapping
     public Company addCompany(@RequestBody Company company) {
         return companyService.addCompany(company);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Company> updateCompany(@PathVariable Integer id, @RequestBody Company companyDetails) {
+        Company updatedCompany = companyService.updateCompany(id, companyDetails);
+        if (updatedCompany != null) {
+            return ResponseEntity.ok(updatedCompany);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -38,4 +38,13 @@ public class CompanyService {
         companyDb.put(newId, company);
         return company;
     }
+
+    public Company updateCompany(Integer id, Company companyDetails) {
+        Company company = companyDb.get(id);
+        if (company != null) {
+            company.setName(companyDetails.getName());
+            return company;
+        }
+        return null;
+    }
 }
