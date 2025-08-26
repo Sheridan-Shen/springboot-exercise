@@ -31,4 +31,11 @@ public class CompanyService {
         }
         return Collections.emptyList();
     }
+
+    public Company addCompany(Company company) {
+        Integer newId = companyIdGenerator.incrementAndGet();
+        company.setId(newId);
+        companyDb.put(newId, company);
+        return company;
+    }
 }
