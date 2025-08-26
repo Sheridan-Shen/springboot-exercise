@@ -30,4 +30,8 @@ public class EmployeeService {
 
         return employee;
     }
+
+    public Employee getEmployeeById(Integer id) {
+        return employeeDb.get(id);
+    }
 }
