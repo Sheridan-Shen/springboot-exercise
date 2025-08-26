@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -36,5 +38,10 @@ public class EmployeeController {
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
+    }
+
+    @GetMapping
+    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
+        return employeeService.getEmployeesByGender(gender);
     }
 }

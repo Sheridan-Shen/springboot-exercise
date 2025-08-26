@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import com.oocl.springboot_exercise.dao.Company;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -33,5 +35,11 @@ public class EmployeeService {
 
     public Employee getEmployeeById(Integer id) {
         return employeeDb.get(id);
+    }
+
+    public List<Employee> getEmployeesByGender(String gender) {
+        return employeeDb.values().stream()
+                .filter(employee -> employee.getGender().equalsIgnoreCase(gender))
+                .collect(Collectors.toList());
     }
 }
