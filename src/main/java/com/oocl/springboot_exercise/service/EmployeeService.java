@@ -47,4 +47,25 @@ public class EmployeeService {
     public List<Employee> getAllEmployees() {
         return new ArrayList<>(employeeDb.values());
     }
+
+    public Employee updateEmployee(Integer id, Employee employeeDetails) {
+        Employee employee = employeeDb.get(id);
+        if (employee != null) {
+            // 更新员工信息
+            if (employeeDetails.getName() != null) {
+                employee.setName(employeeDetails.getName());
+            }
+            if (employeeDetails.getAge() > 0) {
+                employee.setAge(employeeDetails.getAge());
+            }
+            if (employeeDetails.getGender() != null) {
+                employee.setGender(employeeDetails.getGender());
+            }
+            if (employeeDetails.getSalary() >= 0) {
+                employee.setSalary(employeeDetails.getSalary());
+            }
+            return employee;
+        }
+        return null;
+    }
 }
