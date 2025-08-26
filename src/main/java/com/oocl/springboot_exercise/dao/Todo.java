@@ -1,4 +1,4 @@
-package com.oocl.springboot_exercise.controller;
+package com.oocl.springboot_exercise.dao;
 
 public class Todo {
     private int id;

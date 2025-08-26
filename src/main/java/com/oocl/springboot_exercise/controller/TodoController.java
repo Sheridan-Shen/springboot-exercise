@@ -1,5 +1,6 @@
 package com.oocl.springboot_exercise.controller;
 
+import com.oocl.springboot_exercise.dao.Todo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
