@@ -68,4 +68,16 @@ public class EmployeeService {
         }
         return null;
     }
+
+    public boolean deleteEmployee(Integer id) {
+        Employee employee = employeeDb.remove(id);
+        if (employee != null) {
+            Company company = companyService.getCompanyById(employee.getCompanyId());
+            if (company != null) {
+                company.getEmployees().removeIf(e -> e.getId().equals(id));
+            }
+            return true;
+        }
+        return false;
+    }
 }
