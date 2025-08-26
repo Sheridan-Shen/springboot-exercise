@@ -18,4 +18,7 @@ public class CompanyService {
         return new ArrayList<>(companyDb.values());
     }
 
+    public Company getCompanyById(Integer id) {
+        return companyDb.get(id);
+    }
 }
