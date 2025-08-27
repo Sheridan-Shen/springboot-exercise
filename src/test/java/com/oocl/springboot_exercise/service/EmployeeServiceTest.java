@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,7 +43,7 @@ class EmployeeServiceTest {
         // 模拟输出
         Employee mockEmployee = new Employee(1, inputEmployee.getName(),inputEmployee.getAge(),inputEmployee.getGender(),inputEmployee.getSalary(),inputEmployee.getStatus());
 
-        when(employeeRepository.addEmployee(Mockito.any(Employee.class))).thenReturn(mockEmployee);
+        when(employeeRepository.addEmployee(any(Employee.class))).thenReturn(mockEmployee);
 
         // 模拟输出的结果
         Employee outputEmployee = employeeService.addEmployee(inputEmployee);
@@ -148,4 +150,37 @@ class EmployeeServiceTest {
         // 验证repository方法被调用
         verify(employeeRepository, times(1)).getEmployees();
     }
+
+    @Test
+    void should_update_employee_info_successfully() {
+        // 输入
+        Integer employeeId = 1;
+        Employee existingEmployee = new Employee(1, "John Smith", 32, "MALE", 5000.0);
+        existingEmployee.setStatus(true);
+
+        Employee updateDetails = new Employee();
+        updateDetails.setName("John Doe");
+        updateDetails.setAge(33);
+        updateDetails.setGender("MALE");
+        updateDetails.setSalary(5500.0);
+
+        // 模拟输出
+        when(employeeRepository.getEmployee(employeeId)).thenReturn(existingEmployee);
+
+        // 执行
+        Employee result = employeeService.updateEmployeeInfo(employeeId, updateDetails);
+
+        // 验证服务方法的返回结果
+        assertNotNull(result);
+        assertEquals("John Doe", result.getName());
+        assertEquals(33, result.getAge());
+        assertEquals("MALE", result.getGender());
+        assertEquals(5500.0, result.getSalary());
+        assertTrue(result.getStatus()); // 状态应该保持为true
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(1)).getEmployee(employeeId);
+
+    }
+
 }
