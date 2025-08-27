@@ -10,6 +10,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -100,4 +105,31 @@ class EmployeeServiceTest {
         verify(employeeRepository, times(1)).getEmployee(nonExistentId);
     }
 
+    @Test
+    void should_get_all_employees_successfully() {
+        // 准备测试数据
+        List<Employee> mockEmployees = Arrays.asList(
+                new Employee(1, "John Smith", 32, "MALE", 5000.0),
+                new Employee(2, "Jane Johnson", 28, "FEMALE", 6000.0),
+                new Employee(3, "David Williams", 35, "MALE", 5500.0)
+        );
+
+        // 模拟repository返回值
+        Map<Integer, Employee> employeeMap = new HashMap<>();
+        for (Employee employee : mockEmployees) {
+            employeeMap.put(employee.getId(), employee);
+        }
+        when(employeeRepository.getEmployees()).thenReturn(employeeMap);
+
+        // 执行
+        List<Employee> result = employeeService.getAllEmployees();
+
+        // 验证
+        assertNotNull(result);
+        assertEquals(3, result.size());
+        assertTrue(result.containsAll(mockEmployees));
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(1)).getEmployees();
+    }
 }
