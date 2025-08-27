@@ -132,4 +132,20 @@ class EmployeeServiceTest {
         // 验证repository方法被调用
         verify(employeeRepository, times(1)).getEmployees();
     }
+
+    @Test
+    void should_return_empty_list_when_no_employees_exist() {
+        // 模拟repository返回空map
+        when(employeeRepository.getEmployees()).thenReturn(new HashMap<>());
+
+        // 执行
+        List<Employee> result = employeeService.getAllEmployees();
+
+        // 验证
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(1)).getEmployees();
+    }
 }
