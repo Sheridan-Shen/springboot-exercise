@@ -280,4 +280,37 @@ class EmployeeServiceTest {
         // 验证employeeRepository.putEmployee被调用，且传入的employee状态为false
         verify(employeeRepository, times(1)).getEmployee(employeeId);
     }
+
+    @Test
+    void should_get_employees_by_page_successfully() {
+        // 准备测试数据
+        List<Employee> allEmployees = Arrays.asList(
+                new Employee(1, "A", 20, "MALE", 3000.0),
+                new Employee(2, "B", 21, "FEMALE", 3100.0),
+                new Employee(3, "C", 22, "MALE", 3200.0),
+                new Employee(4, "D", 23, "FEMALE", 3300.0),
+                new Employee(5, "E", 24, "MALE", 3400.0),
+                new Employee(6, "F", 25, "FEMALE", 3500.0)
+        );
+
+        // 模拟repository返回值
+        Map<Integer, Employee> employeeMap = new HashMap<>();
+        for (Employee employee : allEmployees) {
+            employeeMap.put(employee.getId(), employee);
+        }
+        when(employeeRepository.getEmployees()).thenReturn(employeeMap);
+
+        // 测试第一页，每页3条
+        List<Employee> page1 = employeeService.getEmployeesByPage(1, 3);
+        assertEquals(3, page1.size());
+        assertEquals(allEmployees.subList(0, 3), page1);
+
+        // 测试第二页，每页3条
+        List<Employee> page2 = employeeService.getEmployeesByPage(2, 3);
+        assertEquals(3, page2.size());
+        assertEquals(allEmployees.subList(3, 6), page2);
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(2)).getEmployees(); // 被调用3次（初始+2次分页）
+    }
 }
