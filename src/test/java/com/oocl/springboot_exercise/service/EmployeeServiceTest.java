@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -209,5 +210,31 @@ class EmployeeServiceTest {
         // 验证repository方法调用
         verify(employeeRepository, times(1)).getEmployee(employeeId);
         verify(employeeRepository, never()).putEmployee(anyInt(), any(Employee.class));
+    }
+
+    @Test
+    void should_full_replace_employee_successfully() {
+        // 输入
+        Integer employeeId = 1;
+        Employee existingEmployee = new Employee(1, "John Smith", 32, "MALE", 5000.0);
+        existingEmployee.setStatus(true);
+
+        Employee employeeToSave = new Employee(1, "Jane Doe", 28, "FEMALE", 7000.0);
+        employeeToSave.setStatus(true); // 确保状态为true
+
+        // 模拟输出
+        when(employeeRepository.getEmployee(employeeId)).thenReturn(existingEmployee);
+        doNothing().when(employeeRepository).putEmployee(eq(employeeId), any(Employee.class));
+
+        // 执行
+        Employee result = employeeService.fullReplaceEmployee(employeeId, employeeToSave);
+
+        // 验证
+        assertNotNull(result);
+        assertEquals(employeeToSave, result);
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(1)).getEmployee(employeeId);
+        verify(employeeRepository, times(1)).putEmployee(eq(employeeId), eq(employeeToSave));
     }
 }
