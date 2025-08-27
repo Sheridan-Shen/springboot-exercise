@@ -237,4 +237,29 @@ class EmployeeServiceTest {
         verify(employeeRepository, times(1)).getEmployee(employeeId);
         verify(employeeRepository, times(1)).putEmployee(eq(employeeId), eq(employeeToSave));
     }
+
+    @Test
+    void should_throw_exception_when_full_replace_inactive_employee() {
+        // 输入
+        Integer employeeId = 1;
+        Employee inactiveEmployee = new Employee(1, "John Smith", 32, "MALE", 5000.0);
+        inactiveEmployee.setStatus(false); // 离职状态
+
+        Employee employeeToSave = new Employee(1, "Jane Doe", 28, "FEMALE", 7000.0);
+
+        // 模拟输出
+        when(employeeRepository.getEmployee(employeeId)).thenReturn(inactiveEmployee);
+
+        // 执行并验证异常
+        InvalidEmployeeException exception = assertThrows(
+                InvalidEmployeeException.class,
+                () -> employeeService.fullReplaceEmployee(employeeId, employeeToSave)
+        );
+
+        assertEquals("员工已经离职, 不能进行更新", exception.getMessage());
+
+        // 验证repository方法调用
+        verify(employeeRepository, times(1)).getEmployee(employeeId);
+        verify(employeeRepository, never()).putEmployee(anyInt(), any(Employee.class));
+    }
 }
