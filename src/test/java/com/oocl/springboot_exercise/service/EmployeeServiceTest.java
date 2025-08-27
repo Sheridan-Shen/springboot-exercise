@@ -11,6 +11,9 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class EmployeeServiceTest {
@@ -33,7 +36,7 @@ class EmployeeServiceTest {
         // 模拟输出
         Employee mockEmployee = new Employee(1, inputEmployee.getName(),inputEmployee.getAge(),inputEmployee.getGender(),inputEmployee.getSalary(),inputEmployee.getStatus());
 
-        Mockito.when(employeeRepository.addEmployee(Mockito.any(Employee.class))).thenReturn(mockEmployee);
+        when(employeeRepository.addEmployee(Mockito.any(Employee.class))).thenReturn(mockEmployee);
 
         // 模拟输出的结果
         Employee outputEmployee = employeeService.addEmployee(inputEmployee);
@@ -76,6 +79,25 @@ class EmployeeServiceTest {
     void should_delete_employee_by_id_successfully(){
         // 输入
         Employee inputEmployee = new Employee(1,"oocl",30,"MALE",10000, true);
-        Mockito.when(employeeRepository.removeEmployee(1)).thenReturn(inputEmployee);
+        when(employeeRepository.removeEmployee(1)).thenReturn(inputEmployee);
     }
+
+    @Test
+    void should_return_null_when_get_employee_by_nonexistent_id() {
+        // 输入
+        Integer nonExistentId = 999;
+
+        // 模拟输出
+        when(employeeRepository.getEmployee(nonExistentId)).thenReturn(null);
+
+        // 执行
+        Employee result = employeeService.getEmployeeById(nonExistentId);
+
+        // 验证
+        assertNull(result);
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(1)).getEmployee(nonExistentId);
+    }
+
 }
