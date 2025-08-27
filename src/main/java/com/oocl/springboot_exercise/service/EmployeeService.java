@@ -9,10 +9,7 @@ import com.oocl.springboot_exercise.models.Company;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,15 +17,13 @@ public class EmployeeService {
     @Autowired
     private CompanyService companyService;
 
-    private final Map<Integer, Employee> employeeDb;
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository){
-        this.employeeDb = employeeRepository.getEmployeeDb();
+        this.employeeRepository = employeeRepository;
     }
 
-
-    private AtomicInteger employeeIdGenerator = new AtomicInteger(6);
 
     public Employee addEmployeeToCompany(Integer companyId, Employee employee) {
         Company company = companyService.getCompanyById(companyId);
@@ -44,32 +39,30 @@ public class EmployeeService {
             throw new InvalidEmployeeException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
         }
 
-        Integer newId = employeeIdGenerator.incrementAndGet();
-        employee.setId(newId);
         employee.setCompanyId(companyId);
         employee.setActivate(true);
+        employeeRepository.addEmployee(employee);
         company.getEmployees().add(employee);
-        employeeDb.put(newId, employee);
 
         return employee;
     }
 
     public Employee getEmployeeById(Integer id) {
-        return employeeDb.get(id);
+        return employeeRepository.getEmployee(id);
     }
 
     public List<Employee> getEmployeesByGender(String gender) {
-        return employeeDb.values().stream()
+        return employeeRepository.getEmployees().values().stream()
                 .filter(employee -> employee.getGender().equalsIgnoreCase(gender))
                 .collect(Collectors.toList());
     }
 
     public List<Employee> getAllEmployees() {
-        return new ArrayList<>(employeeDb.values());
+        return new ArrayList<>(employeeRepository.getEmployees().values());
     }
 
     public Employee updateEmployeeInfo(Integer id, Employee employeeDetails) {
-        Employee employee = employeeDb.get(id);
+        Employee employee = employeeRepository.getEmployee(id);
         if (!employee.isActivate()){
             throw new InvalidEmployeeException("员工已经离职, 不能进行更新");
         }
@@ -93,15 +86,15 @@ public class EmployeeService {
     }
 
     public Employee fullReplaceEmployee(Integer id, Employee employeeToSave){
-        if (!employeeDb.get(id).isActivate()){
+        if (!employeeRepository.getEmployee(id).isActivate()){
             throw new InvalidEmployeeException("员工已经离职, 不能进行更新");
         }
-        employeeDb.put(id, employeeToSave);
+        employeeRepository.putEmployee(id, employeeToSave);
         return employeeToSave;
     }
 
     public boolean deleteEmployee(Integer id) {
-        Employee employee = employeeDb.remove(id);
+        Employee employee = employeeRepository.removeEmployee(id);
         if (employee != null) {
             Company company = companyService.getCompanyById(employee.getCompanyId());
             if (company != null) {
@@ -113,7 +106,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesByPage(Integer page, Integer size) {
-        List<Employee> allEmployees = new ArrayList<>(employeeDb.values());
+        List<Employee> allEmployees = new ArrayList<>(employeeRepository.getEmployees().values());
         int fromIndex = (page - 1) * size;
         int toIndex = Math.min(fromIndex + size, allEmployees.size());
 

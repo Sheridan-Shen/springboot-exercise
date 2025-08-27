@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class EmployeeRepository {
@@ -15,7 +16,27 @@ public class EmployeeRepository {
             4, new Employee(4, "Emily Brown", 23, "FEMALE", 4500.0),
             5, new Employee(5, "Michael Jones", 40, "MALE", 7000.0)));
 
-    public Map<Integer, Employee> getEmployeeDb(){
+    private AtomicInteger employeeIdGenerator = new AtomicInteger(6);
+
+    public Map<Integer, Employee> getEmployees(){
         return employeeDb;
+    }
+
+    public Employee getEmployee(Integer id){
+        return employeeDb.get(id);
+    }
+
+    public void addEmployee(Employee employee){
+        Integer newId = employeeIdGenerator.incrementAndGet();
+        employee.setId(newId);
+        employeeDb.put(newId, employee);
+    }
+
+    public void putEmployee(Integer id, Employee employee){
+        employeeDb.put(id, employee);
+    }
+
+    public Employee removeEmployee(Integer id){
+        return employeeDb.remove(id);
     }
 }
