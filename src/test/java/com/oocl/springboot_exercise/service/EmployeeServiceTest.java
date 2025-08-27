@@ -313,4 +313,30 @@ class EmployeeServiceTest {
         // 验证repository方法被调用
         verify(employeeRepository, times(2)).getEmployees(); // 被调用3次（初始+2次分页）
     }
+
+    @Test
+    void should_return_empty_list_when_request_page_beyond_range() {
+        // 准备测试数据
+        List<Employee> allEmployees = Arrays.asList(
+                new Employee(1, "A", 20, "MALE", 3000.0),
+                new Employee(2, "B", 21, "FEMALE", 3100.0)
+        );
+
+        // 模拟repository返回值
+        Map<Integer, Employee> employeeMap = new HashMap<>();
+        for (Employee employee : allEmployees) {
+            employeeMap.put(employee.getId(), employee);
+        }
+        when(employeeRepository.getEmployees()).thenReturn(employeeMap);
+
+        // 请求第3页，每页2条（总共只有2条数据）
+        List<Employee> result = employeeService.getEmployeesByPage(3, 2);
+
+        // 验证
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+
+        // 验证repository方法被调用
+        verify(employeeRepository, times(1)).getEmployees();
+    }
 }
