@@ -1,6 +1,8 @@
 package com.oocl.springboot_exercise.service;
 
+import com.oocl.springboot_exercise.exception.InvalidEmployeeException;
 import com.oocl.springboot_exercise.models.Employee;
+import com.oocl.springboot_exercise.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.oocl.springboot_exercise.models.Company;
@@ -18,13 +20,14 @@ public class EmployeeService {
     @Autowired
     private CompanyService companyService;
 
-//    private Map<Integer, Employee> employeeDb = new HashMap<>();
-    private final Map<Integer, Employee> employeeDb = new HashMap<>(Map.of(
-            1, new Employee(1, "John Smith", 32, "MALE", 5000.0),
-            2, new Employee(2, "Jane Johnson", 28, "FEMALE", 6000.0),
-            3, new Employee(3, "David Williams", 35, "MALE", 5500.0),
-            4, new Employee(4, "Emily Brown", 23, "FEMALE", 4500.0),
-            5, new Employee(5, "Michael Jones", 40, "MALE", 7000.0)));
+    private final Map<Integer, Employee> employeeDb;
+
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository){
+        this.employeeDb = employeeRepository.getEmployeeDb();
+    }
+
+
     private AtomicInteger employeeIdGenerator = new AtomicInteger(6);
 
     public Employee addEmployeeToCompany(Integer companyId, Employee employee) {
@@ -34,16 +37,17 @@ public class EmployeeService {
         }
 
         if (employee.getAge() < 18 && employee.getAge() > 65){
-            return null;
+            throw new InvalidEmployeeException("年龄不在 18 到 65 岁之间的员工不能被创建。");
         }
 
         if (employee.getAge() >= 30 && employee.getSalary() < 2000){
-            throw new IllegalArgumentException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
+            throw new InvalidEmployeeException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
         }
 
         Integer newId = employeeIdGenerator.incrementAndGet();
         employee.setId(newId);
         employee.setCompanyId(companyId);
+        employee.setActivate(true);
         company.getEmployees().add(employee);
         employeeDb.put(newId, employee);
 
@@ -66,6 +70,9 @@ public class EmployeeService {
 
     public Employee updateEmployeeInfo(Integer id, Employee employeeDetails) {
         Employee employee = employeeDb.get(id);
+        if (!employee.isActivate()){
+            throw new InvalidEmployeeException("员工已经离职, 不能进行更新");
+        }
         if (employee != null) {
             // 更新员工信息
             if (employeeDetails.getName() != null) {
@@ -86,6 +93,9 @@ public class EmployeeService {
     }
 
     public Employee fullReplaceEmployee(Integer id, Employee employeeToSave){
+        if (!employeeDb.get(id).isActivate()){
+            throw new InvalidEmployeeException("员工已经离职, 不能进行更新");
+        }
         employeeDb.put(id, employeeToSave);
         return employeeToSave;
     }

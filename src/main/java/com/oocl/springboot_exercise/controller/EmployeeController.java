@@ -43,12 +43,12 @@ public class EmployeeController {
         }
     }
 
-//    @GetMapping
-//    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
-//        return employeeService.getEmployeesByGender(gender);
-//    }
+    @GetMapping(params = {"gender"})
+    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
+        return employeeService.getEmployeesByGender(gender);
+    }
 
-    @GetMapping
+    @GetMapping()
     public List<Employee> getAllEmployees() {
         return employeeService.getAllEmployees();
     }

@@ -8,6 +8,7 @@ public class Employee {
     private String gender;
     private double salary;
     private Integer companyId;
+    private boolean activate = false;
 
     // 构造函数
     public Employee() {}
@@ -67,5 +68,13 @@ public class Employee {
 
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
+    }
+
+    public boolean isActivate() {
+        return activate;
+    }
+
+    public void setActivate(boolean activate) {
+        this.activate = activate;
     }
 }
