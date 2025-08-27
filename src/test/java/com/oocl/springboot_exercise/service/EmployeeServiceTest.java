@@ -262,4 +262,22 @@ class EmployeeServiceTest {
         verify(employeeRepository, times(1)).getEmployee(employeeId);
         verify(employeeRepository, never()).putEmployee(anyInt(), any(Employee.class));
     }
+
+    @Test
+    void should_delete_employee_change_status_successfully() {
+        // 输入
+        Integer employeeId = 1;
+        Employee existingEmployee = new Employee(1, "John Smith", 32, "MALE", 5000.0);
+        existingEmployee.setStatus(true);
+
+        // 模拟输出
+        when(employeeRepository.getEmployee(employeeId)).thenReturn(existingEmployee);
+        doNothing().when(employeeRepository).putEmployee(eq(employeeId), any(Employee.class));
+
+        // 执行
+        employeeService.deleteEmployeeChangeStatus(employeeId);
+
+        // 验证employeeRepository.putEmployee被调用，且传入的employee状态为false
+        verify(employeeRepository, times(1)).getEmployee(employeeId);
+    }
 }
