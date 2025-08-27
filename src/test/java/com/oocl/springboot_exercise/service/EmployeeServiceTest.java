@@ -1,5 +1,6 @@
 package com.oocl.springboot_exercise.service;
 
+import com.oocl.springboot_exercise.exception.InvalidEmployeeException;
 import com.oocl.springboot_exercise.models.Employee;
 import com.oocl.springboot_exercise.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -44,5 +45,37 @@ class EmployeeServiceTest {
         assertNotNull(outputEmployee.getStatus());
     }
 
+    @Test
+    void should_throw_exception_when_age_16(){
+        // 输入
+        Employee inputEmployee = new Employee("oocl",16,"MALE",30000, true);
 
+        InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> employeeService.addEmployee(inputEmployee));
+        assertEquals("年龄不在 18 到 65 岁之间的员工不能被创建",exception.getMessage());
+    }
+
+    @Test
+    void should_throw_exception_when_age_66(){
+        // 输入
+        Employee inputEmployee = new Employee("oocl",66,"MALE",30000, true);
+
+        InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> employeeService.addEmployee(inputEmployee));
+        assertEquals("年龄不在 18 到 65 岁之间的员工不能被创建",exception.getMessage());
+    }
+
+    @Test
+    void should_throw_exception_when_age_30_salary_10000(){
+        // 输入
+        Employee inputEmployee = new Employee("oocl",30,"MALE",10000, true);
+
+        InvalidEmployeeException exception = assertThrows(InvalidEmployeeException.class, () -> employeeService.addEmployee(inputEmployee));
+        assertEquals("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建",exception.getMessage());
+    }
+
+    @Test
+    void should_delete_employee_by_id_successfully(){
+        // 输入
+        Employee inputEmployee = new Employee(1,"oocl",30,"MALE",10000, true);
+        Mockito.when(employeeRepository.removeEmployee(1)).thenReturn(inputEmployee);
+    }
 }

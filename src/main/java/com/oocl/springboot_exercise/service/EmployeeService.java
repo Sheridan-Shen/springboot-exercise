@@ -25,6 +25,14 @@ public class EmployeeService {
     }
 
     public Employee addEmployee(Employee employee){
+        if (employee.getAge() < 18 || employee.getAge() > 65){
+            throw new InvalidEmployeeException("年龄不在 18 到 65 岁之间的员工不能被创建");
+        }
+
+        if (employee.getAge() >= 30 && employee.getSalary() < 20000){
+            throw new InvalidEmployeeException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
+        }
+
         employeeRepository.addEmployee(employee);
         return employee;
     }
@@ -36,11 +44,11 @@ public class EmployeeService {
             return null;
         }
 
-        if (employee.getAge() < 18 && employee.getAge() > 65){
-            throw new InvalidEmployeeException("年龄不在 18 到 65 岁之间的员工不能被创建。");
+        if (employee.getAge() < 18 || employee.getAge() > 65){
+            throw new InvalidEmployeeException("年龄不在 18 到 65 岁之间的员工不能被创建");
         }
 
-        if (employee.getAge() >= 30 && employee.getSalary() < 2000){
+        if (employee.getAge() >= 30 && employee.getSalary() < 20000){
             throw new InvalidEmployeeException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
         }
 
@@ -108,6 +116,12 @@ public class EmployeeService {
             return true;
         }
         return false;
+    }
+
+    public void deleteEmployeeChangeStatus(Integer id) {
+        Employee employee = employeeRepository.getEmployee(id);
+        employee.setStatus(false);
+        employeeRepository.putEmployee(id, employee);
     }
 
     public List<Employee> getEmployeesByPage(Integer page, Integer size) {
