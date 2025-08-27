@@ -1,4 +1,4 @@
-package com.oocl.springboot_exercise.dao;
+package com.oocl.springboot_exercise.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,12 @@ public class Company {
     public Company(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Company(int id, String name, List<Employee> employees) {
+        this.id = id;
+        this.name = name;
+        this.employees = employees;
     }
 
     // Getters and Setters

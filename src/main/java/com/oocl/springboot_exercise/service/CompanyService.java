@@ -1,7 +1,7 @@
 package com.oocl.springboot_exercise.service;
 
-import com.oocl.springboot_exercise.dao.Company;
-import com.oocl.springboot_exercise.dao.Employee;
+import com.oocl.springboot_exercise.models.Company;
+import com.oocl.springboot_exercise.models.Employee;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -13,8 +13,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CompanyService {
-    private Map<Integer, Company> companyDb = new HashMap<>();
-    private AtomicInteger companyIdGenerator = new AtomicInteger(0);
+//    private Map<Integer, Company> companyDb = new HashMap<>();
+    private final HashMap<Integer, Company> companyDb = new HashMap<>(Map.of(
+            1, new Company(1, "Acme Corporation", List.of(
+                    new Employee(1, "John Smith", 32, "MALE", 5000.0),
+                    new Employee(2, "Jane Johnson", 28, "FEMALE", 6000.0)
+            )),
+            2, new Company(2, "TechCom Solutions", List.of(
+                    new Employee(3, "David Williams", 35, "MALE", 5500.0),
+                    new Employee(4, "Emily Brown", 23, "FEMALE", 4500.0),
+                    new Employee(5, "Michael Jones", 40, "MALE", 7000.0)
+            )),
+            3, new Company(3, "Global Innovators"),
+            4, new Company(4, "Stellar Enterprises"),
+            5, new Company(5, "Nexus Industries")
+    ));
+    private AtomicInteger companyIdGenerator = new AtomicInteger(6);
 
     public List<Company> getAllCompanies() {
         return new ArrayList<>(companyDb.values());

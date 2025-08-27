@@ -1,6 +1,6 @@
 package com.oocl.springboot_exercise.controller;
 
-import com.oocl.springboot_exercise.dao.Employee;
+import com.oocl.springboot_exercise.models.Employee;
 import com.oocl.springboot_exercise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +42,10 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping
-    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
-        return employeeService.getEmployeesByGender(gender);
-    }
+//    @GetMapping
+//    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
+//        return employeeService.getEmployeesByGender(gender);
+//    }
 
     @GetMapping
     public List<Employee> getAllEmployees() {
@@ -60,6 +60,17 @@ public class EmployeeController {
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
+    }
+
+    // 完全替换资源
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> replaceEmployee(@PathVariable Integer id, @RequestBody Employee employeeDetails) {
+        if (employeeDetails.getId() != null && !id.equals(employeeDetails.getId())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Employee saved = employeeService.fullReplaceEmployee(id, employeeDetails);
+        return ResponseEntity.ok(saved);
     }
 
     @DeleteMapping("/{id}")

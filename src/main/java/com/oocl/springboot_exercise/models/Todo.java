@@ -1,4 +1,4 @@
-package com.oocl.springboot_exercise.dao;
+package com.oocl.springboot_exercise.models;
 
 public class Todo {
     private int id;

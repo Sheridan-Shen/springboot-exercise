@@ -1,9 +1,9 @@
 package com.oocl.springboot_exercise.service;
 
-import com.oocl.springboot_exercise.dao.Employee;
+import com.oocl.springboot_exercise.models.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.oocl.springboot_exercise.dao.Company;
+import com.oocl.springboot_exercise.models.Company;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +18,14 @@ public class EmployeeService {
     @Autowired
     private CompanyService companyService;
 
-    private Map<Integer, Employee> employeeDb = new HashMap<>();
-    private AtomicInteger employeeIdGenerator = new AtomicInteger(0);
+//    private Map<Integer, Employee> employeeDb = new HashMap<>();
+    private final Map<Integer, Employee> employeeDb = new HashMap<>(Map.of(
+            1, new Employee(1, "John Smith", 32, "MALE", 5000.0),
+            2, new Employee(2, "Jane Johnson", 28, "FEMALE", 6000.0),
+            3, new Employee(3, "David Williams", 35, "MALE", 5500.0),
+            4, new Employee(4, "Emily Brown", 23, "FEMALE", 4500.0),
+            5, new Employee(5, "Michael Jones", 40, "MALE", 7000.0)));
+    private AtomicInteger employeeIdGenerator = new AtomicInteger(6);
 
     public Employee addEmployeeToCompany(Integer companyId, Employee employee) {
         Company company = companyService.getCompanyById(companyId);
@@ -71,6 +77,11 @@ public class EmployeeService {
         return null;
     }
 
+    public Employee fullReplaceEmployee(Integer id, Employee employeeToSave){
+        employeeDb.put(id, employeeToSave);
+        return employeeToSave;
+    }
+
     public boolean deleteEmployee(Integer id) {
         Employee employee = employeeDb.remove(id);
         if (employee != null) {
@@ -94,4 +105,5 @@ public class EmployeeService {
 
         return allEmployees.subList(fromIndex, toIndex);
     }
+
 }
