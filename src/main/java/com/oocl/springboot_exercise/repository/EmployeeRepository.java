@@ -26,10 +26,11 @@ public class EmployeeRepository {
         return employeeDb.get(id);
     }
 
-    public void addEmployee(Employee employee){
+    public Employee addEmployee(Employee employee){
         Integer newId = employeeIdGenerator.incrementAndGet();
         employee.setId(newId);
         employeeDb.put(newId, employee);
+        return employee;
     }
 
     public void putEmployee(Integer id, Employee employee){

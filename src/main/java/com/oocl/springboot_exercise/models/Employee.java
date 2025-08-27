@@ -8,7 +8,7 @@ public class Employee {
     private String gender;
     private double salary;
     private Integer companyId;
-    private boolean activate = false;
+    private boolean status = true;
 
     // 构造函数
     public Employee() {}
@@ -19,6 +19,23 @@ public class Employee {
         this.age = age;
         this.gender = gender;
         this.salary = salary;
+    }
+
+    public Employee(String name, int age, String gender, double salary, boolean status) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+        this.status = status;
+    }
+
+    public Employee(Integer id,String name, int age, String gender, double salary, boolean status) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+        this.status = status;
     }
 
     // Getters and Setters
@@ -70,11 +87,11 @@ public class Employee {
         this.companyId = companyId;
     }
 
-    public boolean isActivate() {
-        return activate;
+    public boolean getStatus() {
+        return status;
     }
 
-    public void setActivate(boolean activate) {
-        this.activate = activate;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 }

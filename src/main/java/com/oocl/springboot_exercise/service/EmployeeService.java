@@ -24,6 +24,11 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    public Employee addEmployee(Employee employee){
+        employeeRepository.addEmployee(employee);
+        return employee;
+    }
+
 
     public Employee addEmployeeToCompany(Integer companyId, Employee employee) {
         Company company = companyService.getCompanyById(companyId);
@@ -40,7 +45,7 @@ public class EmployeeService {
         }
 
         employee.setCompanyId(companyId);
-        employee.setActivate(true);
+        employee.setStatus(true);
         employeeRepository.addEmployee(employee);
         company.getEmployees().add(employee);
 
@@ -63,7 +68,7 @@ public class EmployeeService {
 
     public Employee updateEmployeeInfo(Integer id, Employee employeeDetails) {
         Employee employee = employeeRepository.getEmployee(id);
-        if (!employee.isActivate()){
+        if (!employee.getStatus()){
             throw new InvalidEmployeeException("员工已经离职, 不能进行更新");
         }
         if (employee != null) {
@@ -86,7 +91,7 @@ public class EmployeeService {
     }
 
     public Employee fullReplaceEmployee(Integer id, Employee employeeToSave){
-        if (!employeeRepository.getEmployee(id).isActivate()){
+        if (!employeeRepository.getEmployee(id).getStatus()){
             throw new InvalidEmployeeException("员工已经离职, 不能进行更新");
         }
         employeeRepository.putEmployee(id, employeeToSave);
