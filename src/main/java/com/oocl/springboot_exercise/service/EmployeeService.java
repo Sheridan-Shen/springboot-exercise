@@ -33,6 +33,14 @@ public class EmployeeService {
             return null;
         }
 
+        if (employee.getAge() < 18 && employee.getAge() > 65){
+            return null;
+        }
+
+        if (employee.getAge() >= 30 && employee.getSalary() < 2000){
+            throw new IllegalArgumentException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
+        }
+
         Integer newId = employeeIdGenerator.incrementAndGet();
         employee.setId(newId);
         employee.setCompanyId(companyId);
@@ -56,7 +64,7 @@ public class EmployeeService {
         return new ArrayList<>(employeeDb.values());
     }
 
-    public Employee updateEmployee(Integer id, Employee employeeDetails) {
+    public Employee updateEmployeeInfo(Integer id, Employee employeeDetails) {
         Employee employee = employeeDb.get(id);
         if (employee != null) {
             // 更新员工信息
