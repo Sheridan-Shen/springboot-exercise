@@ -1,43 +1,23 @@
 package com.oocl.springboot_exercise.repository;
 
 import com.oocl.springboot_exercise.models.Employee;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
-@Repository
-public class EmployeeRepository {
-    private final Map<Integer, Employee> employeeDb = new HashMap<>(Map.of(
-            1, new Employee(1, "John Smith", 32, "MALE", 5000.0),
-            2, new Employee(2, "Jane Johnson", 28, "FEMALE", 6000.0),
-            3, new Employee(3, "David Williams", 35, "MALE", 5500.0),
-            4, new Employee(4, "Emily Brown", 23, "FEMALE", 4500.0),
-            5, new Employee(5, "Michael Jones", 40, "MALE", 7000.0)));
+public interface EmployeeRepository {
+    List<Employee> getEmployees();
 
-    private AtomicInteger employeeIdGenerator = new AtomicInteger(6);
+    Employee getEmployeeById(Integer id);
 
-    public Map<Integer, Employee> getEmployees(){
-        return employeeDb;
-    }
+    List<Employee> getEmployeeByGender(String gender);
 
-    public Employee getEmployee(Integer id){
-        return employeeDb.get(id);
-    }
+    Employee addEmployee(Employee employee);
 
-    public Employee addEmployee(Employee employee){
-        Integer newId = employeeIdGenerator.incrementAndGet();
-        employee.setId(newId);
-        employeeDb.put(newId, employee);
-        return employee;
-    }
+    Employee updateEmployee(Employee employee);
 
-    public void putEmployee(Integer id, Employee employee){
-        employeeDb.put(id, employee);
-    }
+    void deleteEmployee(Employee employee);
 
-    public Employee removeEmployee(Integer id){
-        return employeeDb.remove(id);
-    }
+    Page<Employee> getByPageSize(Pageable pageable);
 }

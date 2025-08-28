@@ -3,6 +3,7 @@ package com.oocl.springboot_exercise.controller;
 import com.oocl.springboot_exercise.models.Employee;
 import com.oocl.springboot_exercise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +25,19 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee, @RequestParam Integer companyId) {
-        Employee addedEmployee = employeeService.addEmployeeToCompany(companyId, employee);
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        Employee addedEmployee = employeeService.addEmployee(employee);
         if (addedEmployee != null) {
             return ResponseEntity.ok(addedEmployee);
         } else {
             return ResponseEntity.badRequest().build(); // 400 Bad Request，公司不存在
         }
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        List<Employee> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/{id}")
@@ -46,11 +53,6 @@ public class EmployeeController {
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeesByGender(@RequestParam String gender) {
         return employeeService.getEmployeesByGender(gender);
-    }
-
-    @GetMapping()
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
     }
 
     @PatchMapping("/{id}")
@@ -70,8 +72,8 @@ public class EmployeeController {
             return ResponseEntity.badRequest().build();
         }
 
-        Employee saved = employeeService.fullReplaceEmployee(id, employeeDetails);
-        return ResponseEntity.ok(saved);
+        Employee updatedEmployee = employeeService.updateEmployee(id, employeeDetails);
+        return ResponseEntity.ok(updatedEmployee);
     }
 
     @DeleteMapping("/{id}")
@@ -84,8 +86,9 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping(params = {"page", "size"})
-    public List<Employee> getEmployeesByPage(@RequestParam Integer page, @RequestParam Integer size) {
-        return employeeService.getEmployeesByPage(page, size);
+    @GetMapping(params = {"pageNumber", "pageSize"})
+    public ResponseEntity<Page<Employee>> getEmployeesByPage(@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
+        Page<Employee> employees = employeeService.getEmployeesByPage(pageNumber, pageSize);
+        return ResponseEntity.ok(employees);
     }
 }

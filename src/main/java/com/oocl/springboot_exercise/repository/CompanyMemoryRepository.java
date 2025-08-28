@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
-public class CompanyRepository {
+public class CompanyMemoryRepository {
     private final HashMap<Integer, Company> companyDb = new HashMap<>(Map.of(
             1, new Company(1, "Acme Corporation", List.of(
                     new Employee(1, "John Smith", 32, "MALE", 5000.0),
