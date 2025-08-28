@@ -1,7 +1,9 @@
 package com.oocl.springboot_exercise.service;
 
 import com.oocl.springboot_exercise.models.Company;
+import com.oocl.springboot_exercise.repository.company.CompanyDBRepository;
 import com.oocl.springboot_exercise.repository.company.CompanyMemoryRepository;
+import com.oocl.springboot_exercise.repository.company.CompanyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,18 +11,18 @@ import java.util.ArrayList;
 
 @Service
 public class CompanyService {
-    private CompanyMemoryRepository companyMemoryRepository;
+    private CompanyRepository companyRepository;
 
-    public CompanyService(CompanyMemoryRepository companyMemoryRepository){
-        this.companyMemoryRepository = companyMemoryRepository;
+    public CompanyService(CompanyDBRepository companyDBRepository){
+        this.companyRepository = companyDBRepository;
     }
 
     public List<Company> getAllCompanies() {
-        return new ArrayList<>(companyMemoryRepository.getCompanies().values());
+        return companyRepository.getCompanies();
     }
 
     public Company getCompanyById(Integer id) {
-        return companyMemoryRepository.getCompany(id);
+        return companyRepository.getCompanyById(id);
     }
 
 //    public List<Employee> getEmployeesByCompanyId(Integer companyId) {
@@ -32,12 +34,11 @@ public class CompanyService {
 //    }
 
     public Company addCompany(Company company) {
-        companyMemoryRepository.addCompany(company);
-        return company;
+        return companyRepository.addCompany(company);
     }
 
     public Company updateCompany(Integer id, Company companyDetails) {
-        Company company = companyMemoryRepository.getCompany(id);
+        Company company = companyRepository.getCompanyById(id);
         if (company != null) {
             company.setName(companyDetails.getName());
             return company;
@@ -46,6 +47,8 @@ public class CompanyService {
     }
 
     public boolean deleteCompany(Integer id) {
-        return companyMemoryRepository.deleteCompany(id);
+        Company targetCompany = companyRepository.getCompanyById(id);
+        companyRepository.deleteCompany(targetCompany);
+        return true;
     }
 }
