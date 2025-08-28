@@ -4,6 +4,7 @@ import com.oocl.springboot_exercise.models.Company;
 import com.oocl.springboot_exercise.repository.company.CompanyDBRepository;
 import com.oocl.springboot_exercise.repository.company.CompanyMemoryRepository;
 import com.oocl.springboot_exercise.repository.company.CompanyRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,10 +39,11 @@ public class CompanyService {
     }
 
     public Company updateCompany(Integer id, Company companyDetails) {
-        Company company = companyRepository.getCompanyById(id);
-        if (company != null) {
-            company.setName(companyDetails.getName());
-            return company;
+        Company targetCompany = companyRepository.getCompanyById(id);
+        if (targetCompany != null) {
+            targetCompany.setName(companyDetails.getName());
+            companyRepository.addCompany(targetCompany);
+            return targetCompany;
         }
         return null;
     }
