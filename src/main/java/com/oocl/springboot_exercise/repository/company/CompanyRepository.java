@@ -1,4 +1,4 @@
-package com.oocl.springboot_exercise.repository;
+package com.oocl.springboot_exercise.repository.company;
 
 import com.oocl.springboot_exercise.models.Company;
 

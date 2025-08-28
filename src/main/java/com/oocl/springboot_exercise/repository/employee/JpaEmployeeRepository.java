@@ -1,4 +1,4 @@
-package com.oocl.springboot_exercise.repository;
+package com.oocl.springboot_exercise.repository.employee;
 
 import com.oocl.springboot_exercise.models.Employee;
 import org.springframework.data.domain.Page;

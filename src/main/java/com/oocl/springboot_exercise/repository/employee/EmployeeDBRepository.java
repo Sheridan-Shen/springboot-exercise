@@ -1,4 +1,4 @@
-package com.oocl.springboot_exercise.repository;
+package com.oocl.springboot_exercise.repository.employee;
 
 import com.oocl.springboot_exercise.models.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
-public class EmployeeDBRepository implements EmployeeRepository{
+public class EmployeeDBRepository implements EmployeeRepository {
     @Autowired
     JpaEmployeeRepository jpaEmployeeRepository;
 

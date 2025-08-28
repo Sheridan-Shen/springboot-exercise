@@ -2,15 +2,14 @@ package com.oocl.springboot_exercise.service;
 
 import com.oocl.springboot_exercise.exception.InvalidEmployeeException;
 import com.oocl.springboot_exercise.models.Employee;
-import com.oocl.springboot_exercise.repository.EmployeeDBRepository;
-import com.oocl.springboot_exercise.repository.EmployeeRepository;
+import com.oocl.springboot_exercise.repository.employee.EmployeeDBRepository;
+import com.oocl.springboot_exercise.repository.employee.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

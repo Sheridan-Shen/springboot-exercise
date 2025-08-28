@@ -1,10 +1,8 @@
 package com.oocl.springboot_exercise.integration;
 
 import com.oocl.springboot_exercise.models.Employee;
-import com.oocl.springboot_exercise.repository.EmployeeDBRepository;
-import com.oocl.springboot_exercise.repository.EmployeeRepository;
+import com.oocl.springboot_exercise.repository.employee.EmployeeDBRepository;
 import com.oocl.springboot_exercise.service.EmployeeService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,7 +12,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
