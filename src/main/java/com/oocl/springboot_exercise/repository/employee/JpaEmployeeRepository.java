@@ -16,8 +16,5 @@ public interface JpaEmployeeRepository extends JpaRepository<Employee, Integer> 
     Page<Employee> findAll(Pageable pageable);
 
     // 方法2：自定义查询 + 分页
-    Page<Employee> findByDepartment(String department, Pageable pageable);
-
-    // 方法3：如果只需要列表，可以用 List
-    List<Employee> findAllBy(Pageable pageable);
+    Page<Employee> findByGender(String gender, Pageable pageable);
 }

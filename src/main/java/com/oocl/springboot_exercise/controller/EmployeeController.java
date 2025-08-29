@@ -56,7 +56,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Integer id, @RequestBody Employee employeeDetails) {
+    public ResponseEntity<Employee> updateEmployeeInfo(@PathVariable Integer id, @RequestBody Employee employeeDetails) {
         Employee updatedEmployee = employeeService.updateEmployeeInfo(id, employeeDetails);
         if (updatedEmployee != null) {
             return ResponseEntity.ok(updatedEmployee);
@@ -67,12 +67,12 @@ public class EmployeeController {
 
     // 完全替换资源
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> replaceEmployee(@PathVariable Integer id, @RequestBody Employee employeeDetails) {
-        if (employeeDetails.getId() != null && !id.equals(employeeDetails.getId())) {
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
+        if (employee.getId() != null && !id.equals(employee.getId())) {
             return ResponseEntity.badRequest().build();
         }
 
-        Employee updatedEmployee = employeeService.updateEmployee(id, employeeDetails);
+        Employee updatedEmployee = employeeService.updateEmployee(id, employee);
         return ResponseEntity.ok(updatedEmployee);
     }
 
