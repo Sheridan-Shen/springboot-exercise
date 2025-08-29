@@ -41,9 +41,10 @@ public class EmployeeController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeResponse>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();
-        return ResponseEntity.ok(employees);
+        List<EmployeeResponse> employeeResponses = employeeMapper.toResponse(employees);
+        return ResponseEntity.ok(employeeResponses);
     }
 
     @GetMapping("/{id}")
@@ -58,15 +59,18 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"gender"})
-    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
-        return employeeService.getEmployeesByGender(gender);
+    public ResponseEntity<List<EmployeeResponse>> getEmployeesByGender(@RequestParam String gender) {
+        List<Employee> employees = employeeService.getEmployeesByGender(gender);
+        List<EmployeeResponse> employeeResponses = employeeMapper.toResponse(employees);
+        return ResponseEntity.ok(employeeResponses);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployeeInfo(@PathVariable Integer id, @RequestBody Employee employeeDetails) {
+    public ResponseEntity<EmployeeResponse> updateEmployeeInfo(@PathVariable Integer id, @RequestBody Employee employeeDetails) {
         Employee updatedEmployee = employeeService.updateEmployeeInfo(id, employeeDetails);
+        EmployeeResponse employeeResponse = employeeMapper.toResponse(updatedEmployee);
         if (updatedEmployee != null) {
-            return ResponseEntity.ok(updatedEmployee);
+            return ResponseEntity.ok(employeeResponse);
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
@@ -74,13 +78,14 @@ public class EmployeeController {
 
     // 完全替换资源
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
+    public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
         if (employee.getId() != null && !id.equals(employee.getId())) {
             return ResponseEntity.badRequest().build();
         }
 
         Employee updatedEmployee = employeeService.updateEmployee(id, employee);
-        return ResponseEntity.ok(updatedEmployee);
+        EmployeeResponse employeeResponse = employeeMapper.toResponse(updatedEmployee);
+        return ResponseEntity.ok(employeeResponse);
     }
 
     @DeleteMapping("/{id}")
@@ -94,8 +99,9 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"pageNumber", "pageSize"})
-    public ResponseEntity<Page<Employee>> getEmployeesByPage(@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<Page<EmployeeResponse>> getEmployeesByPage(@RequestParam(defaultValue = "0") Integer pageNumber, @RequestParam(defaultValue = "10") Integer pageSize) {
         Page<Employee> employees = employeeService.getEmployeesByPage(pageNumber, pageSize);
-        return ResponseEntity.ok(employees);
+        Page<EmployeeResponse> employeeResponses = employeeMapper.toResponse(employees);
+        return ResponseEntity.ok(employeeResponses);
     }
 }
