@@ -2,9 +2,7 @@ package com.oocl.springboot_exercise.service;
 
 import com.oocl.springboot_exercise.models.Company;
 import com.oocl.springboot_exercise.repository.company.CompanyDBRepository;
-import com.oocl.springboot_exercise.repository.company.CompanyMemoryRepository;
 import com.oocl.springboot_exercise.repository.company.CompanyRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

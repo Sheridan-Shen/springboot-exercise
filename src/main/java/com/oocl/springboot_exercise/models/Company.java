@@ -6,8 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -16,7 +14,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-//    private List<Employee> employees = new ArrayList<>();
+
 
     // 构造函数
     public Company() {}
@@ -26,11 +24,6 @@ public class Company {
         this.name = name;
     }
 
-    public Company(int id, String name, List<Employee> employees) {
-        this.id = id;
-        this.name = name;
-//        this.employees = employees;
-    }
 
     // Getters and Setters
     public Integer getId() {
@@ -48,12 +41,4 @@ public class Company {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public List<Employee> getEmployees() {
-//        return employees;
-//    }
-
-//    public void setEmployees(List<Employee> employees) {
-//        this.employees = employees;
-//    }
 }

@@ -1,9 +1,12 @@
 package com.oocl.springboot_exercise.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +20,13 @@ public class Employee {
     private int age;
     private String gender;
     private double salary;
-    private Integer companyId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+//    private Integer companyId;
+
     private boolean status = true;
 
     // 构造函数
@@ -89,13 +98,13 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
+//    public Integer getCompanyId() {
+//        return companyId;
+//    }
+//
+//    public void setCompanyId(Integer companyId) {
+//        this.companyId = companyId;
+//    }
 
     public boolean getStatus() {
         return status;
@@ -103,5 +112,17 @@ public class Employee {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

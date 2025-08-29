@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -99,17 +100,6 @@ public class EmployeeService {
         employeeRepository.updateEmployee(targetEmployee);
     }
 
-//    public List<Employee> getEmployeesByPage(Integer pageNumber, Integer pageSize) {
-//        List<Employee> allEmployees = employeeRepository.getEmployees();
-//        int fromIndex = (page - 1) * size;
-//        int toIndex = Math.min(fromIndex + size, allEmployees.size());
-//
-//        if (fromIndex > allEmployees.size()) {
-//            return Collections.emptyList();
-//        }
-//
-//        return allEmployees.subList(fromIndex, toIndex);
-//    }
 
     public Page<Employee> getEmployeesByPage(int pageNumber, int pageSize) {
         // Pageable 是从 0 开始计数的页码
