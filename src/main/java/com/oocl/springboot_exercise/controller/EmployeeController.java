@@ -1,9 +1,11 @@
 package com.oocl.springboot_exercise.controller;
 
+import com.oocl.springboot_exercise.controller.dto.EmployeeRequest;
 import com.oocl.springboot_exercise.controller.dto.EmployeeResponse;
 import com.oocl.springboot_exercise.controller.mapper.EmployeeMapper;
 import com.oocl.springboot_exercise.models.Employee;
 import com.oocl.springboot_exercise.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,8 @@ public class EmployeeController {
     private EmployeeMapper employeeMapper;
 
     @PostMapping
-    public ResponseEntity<EmployeeResponse> addEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<EmployeeResponse> addEmployee(@Valid @RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
         Employee addedEmployee = employeeService.addEmployee(employee);
         EmployeeResponse employeeResponse = employeeMapper.toResponse(addedEmployee);
         if (addedEmployee != null) {
@@ -78,7 +81,8 @@ public class EmployeeController {
 
     // 完全替换资源
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
+    public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) {
+        Employee employee = employeeMapper.toEntity(employeeRequest);
         if (employee.getId() != null && !id.equals(employee.getId())) {
             return ResponseEntity.badRequest().build();
         }

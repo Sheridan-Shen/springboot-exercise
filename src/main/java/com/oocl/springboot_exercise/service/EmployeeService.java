@@ -27,9 +27,9 @@ public class EmployeeService {
     }
 
     public Employee addEmployee(Employee employee){
-        if (employee.getAge() < 18 || employee.getAge() > 65){
-            throw new InvalidEmployeeException("年龄不在 18 到 65 岁之间的员工不能被创建");
-        }
+//        if (employee.getAge() < 18 || employee.getAge() > 65){
+//            throw new InvalidEmployeeException("年龄不在 18 到 65 岁之间的员工不能被创建");
+//        }
 
         if (employee.getAge() >= 30 && employee.getSalary() < 20000){
             throw new InvalidEmployeeException("年龄大于等于 30 岁且薪资低于 20000 的员工不能被创建");
@@ -84,13 +84,6 @@ public class EmployeeService {
     public boolean deleteEmployee(Integer id) {
         Employee targetEmployee = employeeRepository.getEmployeeById(id);
         employeeRepository.deleteEmployee(targetEmployee);
-//        if (targetEmployee != null) {
-//            Company company = companyService.getCompanyById(targetEmployee.getCompanyId());
-//            if (company != null) {
-//                company.getEmployees().removeIf(e -> e.getId().equals(id));
-//            }
-//            return true;
-//        }
         return true;
     }
 

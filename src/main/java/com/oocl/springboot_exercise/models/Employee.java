@@ -20,14 +20,11 @@ public class Employee {
     private int age;
     private String gender;
     private double salary;
+    private boolean status = true;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
-
-//    private Integer companyId;
-
-    private boolean status = true;
 
     // 构造函数
     public Employee() {}
@@ -97,14 +94,6 @@ public class Employee {
     public void setSalary(double salary) {
         this.salary = salary;
     }
-
-//    public Integer getCompanyId() {
-//        return companyId;
-//    }
-//
-//    public void setCompanyId(Integer companyId) {
-//        this.companyId = companyId;
-//    }
 
     public boolean getStatus() {
         return status;
