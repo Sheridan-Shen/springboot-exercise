@@ -100,7 +100,6 @@ public class EmployeeService {
         employeeRepository.updateEmployee(targetEmployee);
     }
 
-
     public Page<Employee> getEmployeesByPage(int pageNumber, int pageSize) {
         // Pageable 是从 0 开始计数的页码
         Pageable pageable = PageRequest.of(pageNumber, pageSize);

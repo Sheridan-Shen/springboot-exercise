@@ -21,7 +21,7 @@ public class Employee {
     private String gender;
     private double salary;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
 

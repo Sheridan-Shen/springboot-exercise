@@ -3,6 +3,8 @@ package com.oocl.springboot_exercise.integration;
 import com.oocl.springboot_exercise.models.Employee;
 import com.oocl.springboot_exercise.repository.employee.EmployeeDBRepository;
 import com.oocl.springboot_exercise.service.EmployeeService;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,6 +37,12 @@ public class EmployeeTest {
 //        employeeRepository.addEmployee(new Employee(5,"Michael Jones", 40, "MALE", 7000.0));
 //    }
 
+    @BeforeAll
+    public static void setup() {}
+
+    @AfterAll
+    public static void cleanup() {}
+
     @Test
     public void should_return_employee_when_get_all_employee_exist() throws Exception{
         // Given
@@ -61,7 +69,7 @@ public class EmployeeTest {
     @Test
     public void should_return_employee_when_get_employee() throws Exception{
         // Given
-        Employee targetEmployee = employeeRepository.getEmployees().get(7);
+        Employee targetEmployee = employeeRepository.getEmployeeById(7);
 
         // When
         ResultActions perform = client.perform(MockMvcRequestBuilders.get("/employees/7"));
@@ -75,6 +83,7 @@ public class EmployeeTest {
         perform.andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(targetEmployee.getGender()));
         perform.andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(targetEmployee.getSalary()));
     }
+
 
 
 }

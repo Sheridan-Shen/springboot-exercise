@@ -1,5 +1,7 @@
 package com.oocl.springboot_exercise.controller;
 
+import com.oocl.springboot_exercise.controller.dto.EmployeeResponse;
+import com.oocl.springboot_exercise.controller.mapper.EmployeeMapper;
 import com.oocl.springboot_exercise.models.Employee;
 import com.oocl.springboot_exercise.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,15 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private EmployeeMapper employeeMapper;
+
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<EmployeeResponse> addEmployee(@RequestBody Employee employee) {
         Employee addedEmployee = employeeService.addEmployee(employee);
+        EmployeeResponse employeeResponse = employeeMapper.toResponse(addedEmployee);
         if (addedEmployee != null) {
-            return ResponseEntity.ok(addedEmployee);
+            return ResponseEntity.ok(employeeResponse);
         } else {
             return ResponseEntity.badRequest().build(); // 400 Bad Request，公司不存在
         }
@@ -41,10 +47,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Integer id) {
+    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Integer id) {
         Employee employee = employeeService.getEmployeeById(id);
+        EmployeeResponse employeeResponse = employeeMapper.toResponse(employee);
         if (employee != null) {
-            return ResponseEntity.ok(employee);
+            return ResponseEntity.ok(employeeResponse);
         } else {
             return ResponseEntity.notFound().build(); // 404 Not Found
         }
